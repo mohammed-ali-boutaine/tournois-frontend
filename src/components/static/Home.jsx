@@ -1,7 +1,7 @@
 // Home.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import bg from "../assets/bg.svg"
+import bg from "../../assets/bg.svg"
 const Home = () => {
   return (
     <div className="bg-white">

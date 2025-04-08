@@ -1,6 +1,7 @@
 // Login.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import clientApi from '../../lib/clientApi';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -23,15 +24,10 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      });
 
-      const data = await response.json();
+      const response = await clientApi.post("/register",{email,password})
+
+      let data = response.data
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
@@ -41,7 +37,7 @@ const Login = () => {
       localStorage.setItem('token', data.token);
       
       // Redirect to tournaments page
-      navigate('/tournaments');
+      navigate('/dashboard');
     } catch (err) {
       setError(err.message);
     } finally {
