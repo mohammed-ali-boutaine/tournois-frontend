@@ -1,17 +1,17 @@
 import React from "react";
 import Navbar from "../../components/static/NavBar";
-import Register from "../../components/auth/register";
-import Footer from '../../components/static/Footer';
+import Register from "../../components/auth/Register"; // Fix capitalization
+import Footer from "../../components/static/Footer";
 
-const LoginPage = () => {
+const RegisterPage = () => {
+  // Rename component
   return (
     <>
       <Navbar />
-
       <Register />
       <Footer />
     </>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

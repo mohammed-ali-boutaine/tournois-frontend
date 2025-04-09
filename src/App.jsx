@@ -1,8 +1,9 @@
-import HomePage from "./pages/HomePage";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import { PrivateRoute } from "./components/PrivateRoute";
+import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
+import { PrivateRoute } from "./components/PrivateRoute";
+import TournamentsListPage from "./pages/dashboard/TournamentsListPage";
 function App() {
   return (
     <>
@@ -12,14 +13,19 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
+          {/* // private pages  */}
+          <Route path="/profile" element={<RegisterPage />} />
+
+          {/* ---------------------------  */}
           {/* Protected routes */}
           <Route
             path="/tournaments"
             element={
-              <PrivateRoute>{/* <TournamentsListPage /> */}</PrivateRoute>
+              <PrivateRoute>
+                <TournamentsListPage />
+                </PrivateRoute>
             }
           />
-          {/* Other protected routes */}
         </Routes>
       </BrowserRouter>
     </>
