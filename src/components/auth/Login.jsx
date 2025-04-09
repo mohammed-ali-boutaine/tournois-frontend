@@ -1,8 +1,9 @@
 // Login.js
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axiosInstance from "../../lib/axios";
+import axiosInstance from "../../utils/axios";
 import { notifySuccess, notifyError } from "../../utils/toast";
+
 
 const Login = () => {
   const [formData, setFormData] = useState({

@@ -1,7 +1,7 @@
 // Register.js
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axiosInstance from "../../lib/axios";
+import axiosInstance from "../../utils/axios";
 import { notifySuccess, notifyError } from "../../utils/toast";
 
 const Register = () => {
@@ -55,8 +55,6 @@ const Register = () => {
             Create your account
           </h2>
         </div>
-
-
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">

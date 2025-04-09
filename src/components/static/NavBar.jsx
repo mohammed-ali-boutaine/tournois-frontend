@@ -1,7 +1,7 @@
 // Navbar.js
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axiosInstance from "../../lib/axios";
+import axiosInstance from "../../utils/axios";
 import { notifySuccess, notifyError } from "../../utils/toast";
 
 const Navbar = () => {
