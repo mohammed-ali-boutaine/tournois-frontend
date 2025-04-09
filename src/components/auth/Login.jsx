@@ -2,13 +2,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../lib/axios";
+import { notifySuccess, notifyError } from "../../utils/toast";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -20,7 +20,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     try {
@@ -29,11 +28,14 @@ const Login = () => {
 
       // Save token
       localStorage.setItem("token", data.token);
-      
+
+      // Notify success
+      notifySuccess("Successfully logged in!");
+
       // Redirect to tournaments page
       navigate("/tournaments");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      notifyError(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -47,22 +49,13 @@ const Login = () => {
             Sign in to your account
           </h2>
         </div>
-        
-        {error && (
-          <div
-className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-role="alert"
->
-            <span className="block sm:inline">{error}</span>
-          </div>
-        )}
-        
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="email" className="sr-only">
-Email address
-</label>
+                Email address
+              </label>
               <input
                 id="email"
                 name="email"
@@ -77,8 +70,8 @@ Email address
             </div>
             <div>
               <label htmlFor="password" className="sr-only">
-Password
-</label>
+                Password
+              </label>
               <input
                 id="password"
                 name="password"
@@ -102,14 +95,14 @@ Password
               {loading ? "Signing in..." : "Sign in"}
             </button>
           </div>
-          
+
           <div className="text-center">
             <p className="text-sm text-gray-600">
               Don't have an account?{" "}
               <Link
-to="/register"
-className="font-medium text-blue-600 hover:text-blue-500"
->
+                to="/register"
+                className="font-medium text-blue-600 hover:text-blue-500"
+              >
                 Register here
               </Link>
             </p>

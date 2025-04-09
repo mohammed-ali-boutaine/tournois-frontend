@@ -1,9 +1,14 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+// custem import
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import { PrivateRoute } from "./components/PrivateRoute";
 import TournamentsListPage from "./pages/dashboard/TournamentsListPage";
+
 function App() {
   return (
     <>
@@ -23,11 +28,12 @@ function App() {
             element={
               <PrivateRoute>
                 <TournamentsListPage />
-                </PrivateRoute>
+              </PrivateRoute>
             }
           />
         </Routes>
       </BrowserRouter>
+      <ToastContainer position="top-right" autoClose={3000} />
     </>
   );
 }

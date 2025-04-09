@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../lib/axios";
+import { notifySuccess, notifyError } from "../../utils/toast";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +10,6 @@ const Register = () => {
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -21,7 +21,6 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
 
     try {
@@ -31,14 +30,17 @@ const Register = () => {
       // Save token
       localStorage.setItem("token", data.token);
 
+      // Notify success
+      notifySuccess("Account created successfully!");
+
       // Redirect to tournaments page
       navigate("/tournaments");
     } catch (err) {
       if (err.response?.status === 422) {
         const errorMessages = Object.values(err.response.data.errors).flat();
-        setError(errorMessages.join("\n"));
+        notifyError(errorMessages.join("\n"));
       } else {
-        setError(err.response?.data?.message || "Registration failed");
+        notifyError(err.response?.data?.message || "Registration failed");
       }
     } finally {
       setLoading(false);
@@ -54,14 +56,7 @@ const Register = () => {
           </h2>
         </div>
 
-        {error && (
-          <div
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-            role="alert"
-          >
-            <span className="block sm:inline whitespace-pre-line">{error}</span>
-          </div>
-        )}
+
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">

@@ -1,11 +1,14 @@
 // Navbar.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../lib/axios";
+import { notifySuccess, notifyError } from "../../utils/toast";
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,12 +19,23 @@ const Navbar = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const fetchUserData = async () => {
     try {
       const response = await axiosInstance.get("/user");
       setUser(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       handleLogout();
     }
   };
@@ -29,9 +43,14 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await axiosInstance.post("/logout");
+      localStorage.removeItem("token");
+      setIsAuthenticated(false);
+      setUser(null);
+      notifySuccess("Logged out successfully");
+      navigate("/login");
     } catch (error) {
       console.error("Error during logout:", error);
-    } finally {
+      notifyError("Error logging out");
       localStorage.removeItem("token");
       setIsAuthenticated(false);
       setUser(null);
@@ -58,24 +77,33 @@ const Navbar = () => {
               <Link to="/matches" className="text-white hover:text-gray-300">
                 Matches
               </Link>
-              <div className="relative group">
-                <button className="text-white hover:text-gray-300">
+              <div className="relative group" ref={dropdownRef}>
+                <button
+                  className="text-white hover:text-gray-300"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
                   {user?.name || "Profile"}
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
-                  <Link
-                    to="/profile"
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                  >
-                    Profile
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
-                  >
-                    Logout
-                  </button>
-                </div>
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                    <Link
+                      to="/profile"
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      Profile
+                    </Link>
+                    <button
+                      onClick={() => {
+                        setIsDropdownOpen(false);
+                        handleLogout();
+                      }}
+                      className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
               </div>
             </>
           ) : (
