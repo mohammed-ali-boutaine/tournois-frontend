@@ -4,12 +4,16 @@ import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
 import { notifySuccess, notifyError } from "../../utils/toast";
 
+
+
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+
+  
 
   useEffect(() => {
     const token = localStorage.getItem("token");

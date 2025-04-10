@@ -8,11 +8,16 @@ import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import { PrivateRoute } from "./components/PrivateRoute";
 import TournamentsListPage from "./pages/dashboard/TournamentsListPage";
+import Navbar from "./components/smart/NavBar";
+import Footer from "./components/static/Footer";
 
 function App() {
   return (
     <>
       <BrowserRouter>
+      <Navbar />
+
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -32,8 +37,12 @@ function App() {
             }
           />
         </Routes>
-      </BrowserRouter>
+        
+      <Footer />
       <ToastContainer position="top-right" autoClose={3000} />
+      </BrowserRouter>
+
+
     </>
   );
 }
